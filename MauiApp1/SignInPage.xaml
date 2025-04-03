@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MauiApp1.SignInPage"
+    BackgroundColor="#87D3E8">
+
+    <ScrollView>
+        <VerticalStackLayout>
+
+            <!-- Logo Container -->
+            <Grid HorizontalOptions="Center" Margin="0,60,0,0">
+                <Image Source="logo.png"
+               WidthRequest="120"
+               HeightRequest="120"
+               Aspect="AspectFit" />
+            </Grid>
+
+            <!-- Message Container using Border -->
+            <Border 
+          BackgroundColor="White"
+          StrokeShape="RoundRectangle 50"
+          StrokeThickness="0"
+          Padding="30"
+          Margin="0,50,0,0">
+                <VerticalStackLayout Spacing="15" HorizontalOptions="Fill">
+
+                    <!-- Title -->
+                    <Label Text="Welcome Back!"
+                 FontSize="24"
+                 FontAttributes="Bold"
+                 TextColor="Black"
+                 HorizontalTextAlignment="Center" />
+
+                    <!-- Input Fields -->
+                    <Entry Placeholder="Email address"
+                 Keyboard="Email"
+                 HeightRequest="50" />
+                    <Entry Placeholder="Password"
+                 IsPassword="True"
+                 HeightRequest="50" />
+
+                    <!-- Buttons -->
+                    <Button Text="Sign in"
+                  BackgroundColor="#87D3E8"
+                  TextColor="White"
+                  CornerRadius="8"
+                  HeightRequest="50" />
+
+                    <Button Text="Sign Up"
+                  BackgroundColor="#C6EBF5"
+                  TextColor="#555"
+                  CornerRadius="8"
+                  HeightRequest="50"
+                  Clicked="SignUpButton_Clicked" />
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
