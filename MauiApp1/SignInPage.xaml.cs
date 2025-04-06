@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
 
 namespace MauiApp1
 {
@@ -11,6 +10,20 @@ namespace MauiApp1
         public SignInPage()
         {
             InitializeComponent();
+        }
+
+        // Handle Sign In Button Click
+        private async void SignInButton_Clicked(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(EmailEntry.Text) && !string.IsNullOrWhiteSpace(PasswordEntry.Text))
+            {
+                // Redirect to TodoPage
+                await Shell.Current.GoToAsync("//TodoPage");
+            }
+            else
+            {
+                await DisplayAlert("Error", "Please enter both email and password.", "OK");
+            }
         }
 
         // Navigate to the SignUpPage
