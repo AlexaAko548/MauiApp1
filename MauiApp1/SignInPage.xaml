@@ -32,20 +32,23 @@
                  TextColor="Black"
                  HorizontalTextAlignment="Center" />
 
-                    <!-- Input Fields -->
-                    <Entry Placeholder="Email address"
-                 Keyboard="Email"
-                 HeightRequest="50" />
-                    <Entry Placeholder="Password"
-                 IsPassword="True"
-                 HeightRequest="50" />
+                    <Entry x:Name="EmailEntry" Placeholder="Email address"
+       Keyboard="Email" HeightRequest="50" 
+       TextColor="Black"/>
 
-                    <!-- Buttons -->
+                    <Entry x:Name="PasswordEntry" Placeholder="Password"
+       IsPassword="True" HeightRequest="50" 
+       TextColor="Black"/>
+
+
                     <Button Text="Sign in"
-                  BackgroundColor="#87D3E8"
-                  TextColor="White"
-                  CornerRadius="8"
-                  HeightRequest="50" />
+        BackgroundColor="#87D3E8"
+        TextColor="White"
+        CornerRadius="8"
+        HeightRequest="50"
+        Clicked="SignInButton_Clicked"/>
+
+                  
 
                     <Button Text="Sign Up"
                   BackgroundColor="#C6EBF5"
