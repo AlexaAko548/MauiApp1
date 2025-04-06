@@ -1,0 +1,58 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.EditTodoPage"
+             BackgroundColor="#F5F5F5">
+
+    <Grid RowDefinitions="*, Auto" Padding="20" RowSpacing="20">
+
+        <!-- Form Content -->
+        <VerticalStackLayout Grid.Row="0" Spacing="20">
+
+            <!-- Title Entry -->
+            <Entry x:Name="TitleEntry"
+                   Placeholder="Enter task title"
+                   BackgroundColor="grey"
+                   HeightRequest="50"
+                   TextColor="Black" />
+
+            <!-- Description Field (use Editor instead of Entry) -->
+            <Editor x:Name="DescriptionEntry"
+        Placeholder="Description"
+        BackgroundColor="grey"
+        HeightRequest="150"
+        TextColor="Black"
+        AutoSize="TextChanges" />
+
+
+            <!-- Save Button -->
+            <Button Text="Save"
+                    BackgroundColor="LightBlue"
+                    TextColor="Black"
+                    Clicked="Sclicked" />
+
+        </VerticalStackLayout>
+
+        <!-- Bottom Navigation -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*"
+              BackgroundColor="White"
+              Padding="0,8"
+              Margin="0,10,0,0">
+
+            <ImageButton Source="icon_tasks.png"
+                         Grid.Column="0"
+                         HorizontalOptions="Center"
+                         BackgroundColor="Red" />
+
+            <ImageButton Source="icon_check.png"
+                         Grid.Column="1"
+                         HorizontalOptions="Center"
+                         BackgroundColor="Red" />
+
+            <ImageButton Source="icon_profile.png"
+                         Grid.Column="2"
+                         HorizontalOptions="Center"
+                         BackgroundColor="Red" />
+        </Grid>
+
+    </Grid>
+</ContentPage>
