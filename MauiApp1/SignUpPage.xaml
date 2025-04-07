@@ -51,7 +51,8 @@
                           BackgroundColor="#87D3E8"
                           TextColor="White"
                           CornerRadius="8"
-                          HeightRequest="50" />
+                          HeightRequest="50" 
+						  Clicked="SignUpButton_Clicked"	/>
 
                     <Button Text="Go Back"
                           BackgroundColor="#C6EBF5"

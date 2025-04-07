@@ -13,6 +13,12 @@ namespace MauiApp1
             InitializeComponent();
         }
 
+        private async void SignUpButton_Clicked(object sender, EventArgs e)
+        {
+            // Navigate to TodoPage after sign up
+            await Shell.Current.GoToAsync("//TodoPage");
+        }
+
         // Navigate back to the SignInPage
         private async void GoBackButton_Clicked(object sender, EventArgs e)
         {

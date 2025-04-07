@@ -17,12 +17,11 @@
         Route="SignUpPage" 
         ContentTemplate="{DataTemplate local:SignUpPage}" />
 
-    <ShellContent  Route="TodoPage" ContentTemplate="{DataTemplate local:TodoPage}" />
-
+    <ShellContent Route="TodoPage" ContentTemplate="{DataTemplate local:TodoPage}" />
     <ShellContent Route="AddTodoPage" ContentTemplate="{DataTemplate local:AddTodoPage}" />
-    <ShellContent Route="AddTodoPage" ContentTemplate="{DataTemplate local:EditTodoPage}" />
-
-
+    <ShellContent Route="EditTodoPage" ContentTemplate="{DataTemplate local:EditTodoPage}" />
+    <ShellContent Route="CompletedTodoPage" ContentTemplate="{DataTemplate local:CompletedTodoPage}" />
+    <ShellContent Route="ProfilePage" ContentTemplate="{DataTemplate local:ProfilePage}" />
 
 
 </Shell>

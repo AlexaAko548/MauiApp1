@@ -1,0 +1,56 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.ProfilePage"
+             BackgroundColor="#F5F5F5">
+
+    <Grid RowDefinitions="*, Auto">
+
+        <!-- Main Content -->
+        <VerticalStackLayout Grid.Row="0" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Spacing="30">
+
+            <!-- TODO LIST Image/Logo -->
+            <Frame BackgroundColor="#C9F9FF" Padding="30" HasShadow="True" CornerRadius="12">
+                <Image Source="logo.png" 
+                       HeightRequest="100" 
+                       WidthRequest="200" 
+                       Aspect="AspectFit" />
+            </Frame>
+
+            <!-- Sign Out Button -->
+            <Button Text="Sign out"
+                    BackgroundColor="#A0A0A0"
+                    TextColor="White"
+                    WidthRequest="150"
+                    HeightRequest="45"
+                    CornerRadius="10"
+                    Clicked="OnSignOutClicked" />
+        </VerticalStackLayout>
+
+        <!-- Bottom Navigation -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*" 
+              Margin="15,10" BackgroundColor="White"
+              VerticalOptions="End"
+              Padding="0,8">
+            <ImageButton Source="list.png" 
+                         Grid.Column="0" 
+                         HorizontalOptions="Center"
+                         HeightRequest="24" 
+                         WidthRequest="24" 
+                         BackgroundColor="Transparent" 
+                         Clicked="OnListClicked"/>
+            <ImageButton Source="check.png" 
+                         Grid.Column="1" 
+                         HorizontalOptions="Center"
+                         HeightRequest="24" 
+                         WidthRequest="24"
+                         BackgroundColor="Transparent"
+                         Clicked="OnCheckClicked"/>
+            <ImageButton Source="profile.png" 
+                         Grid.Column="2" 
+                         HorizontalOptions="Center"
+                         HeightRequest="24" 
+                         WidthRequest="24"
+                         BackgroundColor="Transparent" />
+        </Grid>
+    </Grid>
+</ContentPage>
