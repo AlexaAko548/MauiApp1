@@ -13,16 +13,23 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame BackgroundColor="#D9D9D9"
-                                   Margin="0,8"
-                                   CornerRadius="12"
-                                   HasShadow="True">
-                                
-                                <!-- Gesture Recognizer inside the Frame -->
-                                <Frame.GestureRecognizers>
+                            <!-- Replacing Frame with Border -->
+                            <Border BackgroundColor="#D9D9D9"
+                                    Margin="0,8"
+                                    StrokeShape="RoundRectangle 12">
+                                <!-- Add shadow via Border.Shadow -->
+                                <Border.Shadow>
+                                    <Shadow Brush="Black"
+                                            Opacity="0.3"
+                                            Offset="0,4"
+                                            Radius="4"/>
+                                </Border.Shadow>
+
+                                <!-- Gesture Recognizer for the whole Border -->
+                                <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnTodoItemTapped" />
-                                </Frame.GestureRecognizers>
-                                
+                                </Border.GestureRecognizers>
+
                                 <Grid ColumnDefinitions="Auto, *, Auto" Padding="10,12">
                                     <!-- CheckBox to mark completion -->
                                     <CheckBox IsChecked="{Binding IsCompleted}" 
@@ -46,11 +53,12 @@
                                                HeightRequest="20"
                                                VerticalOptions="Center"/>
                                         <HorizontalStackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="OnDeleteTaskClicked" CommandParameter="{Binding .}" />
+                                            <TapGestureRecognizer Tapped="OnDeleteTaskClicked" 
+                                                                 CommandParameter="{Binding .}" />
                                         </HorizontalStackLayout.GestureRecognizers>
                                     </HorizontalStackLayout>
                                 </Grid>
-                            </Frame>
+                            </Border>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -58,7 +66,8 @@
         </Grid>
 
         <!-- Floating Add Task Button -->
-        <Grid HorizontalOptions="End" VerticalOptions="EndAndExpand" Padding="0,0,20,20">
+        <!-- Removed deprecated EndAndExpand in favor of End -->
+        <Grid HorizontalOptions="End" VerticalOptions="End" Padding="0,0,20,20">
             <Grid>
                 <!-- Shadow for Button -->
                 <BoxView Color="Gray" Opacity="0.3" Margin="0,0,0,4" HeightRequest="10"/>

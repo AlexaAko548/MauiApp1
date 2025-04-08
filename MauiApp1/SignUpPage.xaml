@@ -11,7 +11,7 @@
             <!-- Logo Container -->
             <Grid HorizontalOptions="Center" Margin="0,50,0,0">
                 <Image Source="logo.png"
-               WidthRequest="120"
+               WidthRequest="200"
                HeightRequest="120"
                Aspect="AspectFit" />
             </Grid>
@@ -19,10 +19,11 @@
             <!-- Message Container using Border (replacing Frame) -->
             <Border 
           BackgroundColor="White"
-          StrokeShape="RoundRectangle 80"
+          StrokeShape="RoundRectangle 50"
           StrokeThickness="0"
           Padding="30"
-          Margin="0,50,0,0">
+          Margin="0,50,0,0"
+		  HeightRequest="700">
                 <VerticalStackLayout Spacing="15" HorizontalOptions="Fill">
 
                     <!-- Title -->
@@ -30,13 +31,16 @@
                          FontSize="24"
                          FontAttributes="Bold"
                          TextColor="Black"
-                         HorizontalTextAlignment="Center" />
+                         HorizontalTextAlignment="Center"/>
 
                     <!-- Input Fields -->
                     <Entry Placeholder="Email address"
                          Keyboard="Email"
                          HeightRequest="50" />
-                    <Entry Placeholder="Username"
+                    <Entry Placeholder="First Name"
+                         Keyboard="Text"
+                         HeightRequest="50" />
+					<Entry Placeholder="Last Name"
                          Keyboard="Text"
                          HeightRequest="50" />
                     <Entry Placeholder="Password"
@@ -48,18 +52,21 @@
 
                     <!-- Buttons -->
                     <Button Text="Sign in"
-                          BackgroundColor="#87D3E8"
-                          TextColor="White"
-                          CornerRadius="8"
-                          HeightRequest="50" 
-						  Clicked="SignUpButton_Clicked"	/>
+						    FontSize="15"
+                            BackgroundColor="#87D3E8"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="60" 
+						    Clicked="SignUpButton_Clicked"
+						    Margin="0,20,0,5"/>
 
                     <Button Text="Go Back"
-                          BackgroundColor="#C6EBF5"
-                          TextColor="#555"
-                          CornerRadius="8"
-                          HeightRequest="50"
-                          Clicked="GoBackButton_Clicked" />
+							FontSize="15"
+                            BackgroundColor="#C6EBF5"
+                            TextColor="#555"
+                            CornerRadius="8"
+                            HeightRequest="60"
+                            Clicked="GoBackButton_Clicked" />
                 </VerticalStackLayout>
             </Border>
 

@@ -5,7 +5,6 @@ namespace MauiApp1
 {
     public partial class TodoPage : ContentPage
     {
-        // Bind to the global pending tasks
         public ObservableCollection<TodoItem> Tasks { get; set; }
 
         public TodoPage()
@@ -35,7 +34,16 @@ namespace MauiApp1
         {
             if (sender is TapGestureRecognizer tapGesture && tapGesture.CommandParameter is TodoItem taskToDelete)
             {
+                // Instead of App.Current.MainPage.DisplayAlert(...)
+                // we can just remove the item or show a quick alert:
+
+                // 1) Remove the item
                 Tasks.Remove(taskToDelete);
+
+                // 2) Possibly show an alert using `this` or `Shell.Current`:
+                this.DisplayAlert("Deleted", $"Deleted {taskToDelete.Title}", "OK");
+                // or
+                // Shell.Current.DisplayAlert("Deleted", $"Deleted {taskToDelete.Title}", "OK");
             }
         }
 
@@ -81,10 +89,15 @@ namespace MauiApp1
 
     public class TodoItem
     {
-        public string Title { get; set; }
-        public bool IsCompleted { get; set; }
+        // Fix #1: Provide a default value to avoid CS8618
+        public string Title { get; set; } = string.Empty;
 
-        // This command is optional; it could be used for delete confirmation, etc.
-        public ICommand DeleteCommand => new Command(() => App.Current.MainPage.DisplayAlert("Delete", $"Delete {Title}?", "OK"));
+        public bool IsCompleted { get; set; }
+        public ICommand DeleteCommand => new Command(() =>
+        {
+            // If you are sure Shell is not null:
+            Shell.Current.DisplayAlert("Delete", $"Delete {Title}?", "OK");
+        });
     }
+
 }
