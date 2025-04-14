@@ -34,21 +34,13 @@
                          HorizontalTextAlignment="Center"/>
 
                     <!-- Input Fields -->
-                    <Entry Placeholder="Email address"
-                         Keyboard="Email"
-                         HeightRequest="50" />
-                    <Entry Placeholder="First Name"
-                         Keyboard="Text"
-                         HeightRequest="50" />
-					<Entry Placeholder="Last Name"
-                         Keyboard="Text"
-                         HeightRequest="50" />
-                    <Entry Placeholder="Password"
-                         IsPassword="True"
-                         HeightRequest="50" />
-                    <Entry Placeholder="Confirm Password"
-                         IsPassword="True"
-                         HeightRequest="50" />
+                    <Entry x:Name="EmailEntry" Placeholder="Email address" Keyboard="Email" HeightRequest="50" TextColor="Black" />
+                    <Entry x:Name="FirstNameEntry" Placeholder="First Name" Keyboard="Text" HeightRequest="50" TextColor="Black" />
+                    <Entry x:Name="LastNameEntry" Placeholder="Last Name" Keyboard="Text" HeightRequest="50" TextColor="Black" />
+                    <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" HeightRequest="50" TextColor="Black" />
+                    <Entry x:Name="ConfirmPasswordEntry" Placeholder="Confirm Password" IsPassword="True" HeightRequest="50" TextColor="Black" />
+
+
 
                     <!-- Buttons -->
                     <Button Text="Sign in"
