@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
 
 namespace MauiApp1
 {
@@ -46,7 +49,7 @@ namespace MauiApp1
                 confirm_password = confirmPassword
             };
 
-            var json = System.Text.Json.JsonSerializer.Serialize(signupData);
+            var json = JsonSerializer.Serialize(signupData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using var httpClient = new HttpClient();
@@ -56,7 +59,7 @@ namespace MauiApp1
                 var responseBody = await response.Content.ReadAsStringAsync();
 
                 // Parse JSON response
-                var result = System.Text.Json.JsonSerializer.Deserialize<SignUpResponse>(responseBody);
+                var result = JsonSerializer.Deserialize<SignUpResponse>(responseBody);
 
                 if (result != null && result.status == 200)
                 {
@@ -78,9 +81,8 @@ namespace MauiApp1
         public class SignUpResponse
         {
             public int status { get; set; }
-            public string message { get; set; }
+            public string? message { get; set; }
         }
-
 
         // Navigate back to the SignInPage
         private async void GoBackButton_Clicked(object sender, EventArgs e)

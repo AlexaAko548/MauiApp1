@@ -1,23 +1,27 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MauiApp1"
              x:Class="MauiApp1.TodoPage"
+             x:DataType="local:TodoPage"
              BackgroundColor="#F5F5F5">
 
     <Grid RowDefinitions="*, Auto">
+
         <!-- Main Content -->
         <Grid Grid.Row="0" Margin="20">
             <ListView x:Name="TodoListView"
                       ItemsSource="{Binding Tasks}"
                       HasUnevenRows="True"
                       SeparatorVisibility="None">
+
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <!-- Each item is a TodoItem, so let the compiler know -->
+                    <DataTemplate x:DataType="local:TodoItem">
                         <ViewCell>
-                            <!-- Replacing Frame with Border -->
                             <Border BackgroundColor="#D9D9D9"
                                     Margin="0,8"
                                     StrokeShape="RoundRectangle 12">
-                                <!-- Add shadow via Border.Shadow -->
+
                                 <Border.Shadow>
                                     <Shadow Brush="Black"
                                             Opacity="0.3"
@@ -25,7 +29,7 @@
                                             Radius="4"/>
                                 </Border.Shadow>
 
-                                <!-- Gesture Recognizer for the whole Border -->
+                                <!-- Entire Border tap -->
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnTodoItemTapped" />
                                 </Border.GestureRecognizers>
@@ -33,16 +37,17 @@
                                 <Grid ColumnDefinitions="Auto, *, Auto" Padding="10,12">
                                     <!-- CheckBox to mark completion -->
                                     <CheckBox IsChecked="{Binding IsCompleted}" 
-                                              Grid.Column="0" 
-                                              Color="Black" 
+                                              Grid.Column="0"
+                                              Color="Black"
                                               VerticalOptions="Center"
                                               CheckedChanged="OnCheckBoxChanged"/>
                                     <!-- Task Title -->
-                                    <Label Text="{Binding Title}" 
-                                           Grid.Column="1" 
-                                           VerticalOptions="Center" 
-                                           FontSize="16" 
+                                    <Label Text="{Binding Title}"
+                                           Grid.Column="1"
+                                           VerticalOptions="Center"
+                                           FontSize="16"
                                            LineBreakMode="TailTruncation"/>
+
                                     <!-- Delete Icon -->
                                     <HorizontalStackLayout Grid.Column="2"
                                                            Spacing="5"
@@ -53,8 +58,10 @@
                                                HeightRequest="20"
                                                VerticalOptions="Center"/>
                                         <HorizontalStackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="OnDeleteTaskClicked" 
-                                                                 CommandParameter="{Binding .}" />
+                                            <!-- Pass the entire TodoItem as CommandParameter -->
+                                            <TapGestureRecognizer 
+                                                Tapped="OnDeleteTaskClicked"
+                                                CommandParameter="{Binding .}" />
                                         </HorizontalStackLayout.GestureRecognizers>
                                     </HorizontalStackLayout>
                                 </Grid>
@@ -66,13 +73,15 @@
         </Grid>
 
         <!-- Floating Add Task Button -->
-        <!-- Removed deprecated EndAndExpand in favor of End -->
         <Grid HorizontalOptions="End" VerticalOptions="End" Padding="0,0,20,20">
             <Grid>
-                <!-- Shadow for Button -->
                 <BoxView Color="Gray" Opacity="0.3" Margin="0,0,0,4" HeightRequest="10"/>
-                <Button Text="+" BackgroundColor="#2196F3" TextColor="black"
-                        CornerRadius="30" HeightRequest="60" WidthRequest="60"
+                <Button Text="+" 
+                        BackgroundColor="#2196F3"
+                        TextColor="black"
+                        CornerRadius="30"
+                        HeightRequest="60"
+                        WidthRequest="60"
                         FontSize="28"
                         Clicked="OnAddTaskClicked"
                         BorderWidth="0"
@@ -86,22 +95,22 @@
               VerticalOptions="End"
               Padding="0,8">
             <ImageButton Source="list.png" 
-                         Grid.Column="0" 
+                         Grid.Column="0"
                          HorizontalOptions="Center"
-                         HeightRequest="24" 
-                         WidthRequest="24" 
-                         BackgroundColor="Transparent" />
-            <ImageButton Source="check.png" 
-                         Grid.Column="1" 
+                         HeightRequest="24"
+                         WidthRequest="24"
+                         BackgroundColor="Transparent"/>
+            <ImageButton Source="check.png"
+                         Grid.Column="1"
                          HorizontalOptions="Center"
-                         HeightRequest="24" 
+                         HeightRequest="24"
                          WidthRequest="24"
                          BackgroundColor="Transparent"
                          Clicked="OnCheckClicked"/>
-            <ImageButton Source="profile.png" 
-                         Grid.Column="2" 
+            <ImageButton Source="profile.png"
+                         Grid.Column="2"
                          HorizontalOptions="Center"
-                         HeightRequest="24" 
+                         HeightRequest="24"
                          WidthRequest="24"
                          BackgroundColor="Transparent"
                          Clicked="OnProfileClicked"/>
