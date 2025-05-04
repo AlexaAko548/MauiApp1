@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage;
 using static MauiApp1.SignUpPage;
 
 namespace MauiApp1
@@ -42,7 +43,11 @@ namespace MauiApp1
 
                     // (Optional) Store user info if you need it later
                     var user = result.data;
+                    Preferences.Set("user_id", user.id); 
                     Console.WriteLine($"Welcome, {user.fname} {user.lname} (ID: {user.id})");
+
+                    Session.UserId = result.data.id; // Set after login
+
 
                     // Navigate to TodoPage
                     await Shell.Current.GoToAsync("//TodoPage");

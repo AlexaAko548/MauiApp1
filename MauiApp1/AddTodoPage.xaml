@@ -33,30 +33,32 @@
         </VerticalStackLayout>
 
         <!-- Bottom Navigation -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,*,*" 
-              Margin="15,10" BackgroundColor="White"
-              VerticalOptions="End"
-              Padding="0,8">
-            <ImageButton Source="list.png" 
-                 Grid.Column="0" 
-                 HorizontalOptions="Center"
-                 HeightRequest="24" 
-                 WidthRequest="24" 
-                 BackgroundColor="Transparent" />
-
-            <ImageButton Source="check.png" 
-                 Grid.Column="1" 
-                 HorizontalOptions="Center"
-                 HeightRequest="24" 
-                 WidthRequest="24"
-                 BackgroundColor="Transparent" />
-
-            <ImageButton Source="profile.png" 
-                 Grid.Column="2" 
-                 HorizontalOptions="Center"
-                 HeightRequest="24" 
-                 WidthRequest="24"
-                 BackgroundColor="Transparent" />
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*"
+         Margin="15,10" BackgroundColor="White"
+         VerticalOptions="End"
+         Padding="0,8">
+            <ImageButton Source="list.png"
+                    Grid.Column="0"
+                    HorizontalOptions="Center"
+                    HeightRequest="24"
+                    WidthRequest="24"
+                    BackgroundColor="Transparent" 
+                    Clicked="OnHomeClicked" />
+            
+            <ImageButton Source="check.png"
+                    Grid.Column="1"
+                    HorizontalOptions="Center"
+                    HeightRequest="24"
+                    WidthRequest="24"
+                    BackgroundColor="Transparent"
+                    Clicked="OnCheckClicked" />
+            <ImageButton Source="profile.png"
+                    Grid.Column="2"
+                    HorizontalOptions="Center"
+                    HeightRequest="24"
+                    WidthRequest="24"
+                    BackgroundColor="Transparent"
+                    Clicked="OnProfileClicked" />
         </Grid>
 
     </Grid>
