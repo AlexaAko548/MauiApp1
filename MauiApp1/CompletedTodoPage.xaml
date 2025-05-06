@@ -1,10 +1,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:MauiApp1"
              x:Class="MauiApp1.CompletedTodoPage"
-             x:DataType="local:CompletedTodoPage"
              BackgroundColor="#F5F5F5">
-	<Grid RowDefinitions="*, Auto">
+
+    <Grid RowDefinitions="*, Auto">
 
         <!-- Completed Task List -->
         <CollectionView ItemsSource="{Binding CompletedTasks}"
@@ -25,7 +24,7 @@
                                 <CheckBox IsChecked="{Binding IsCompleted}"
                                           Color="Black"
                                           VerticalOptions="Center"
-                                          CheckedChanged="OnCheckBoxUnchecked" />
+                                           CheckedChanged="OnCheckBoxUnchecked" />
 
                                 <!-- Task title -->
                                 <Label Text="{Binding Title}"
@@ -33,7 +32,7 @@
                                        FontSize="16"
                                        VerticalOptions="Center"
                                        LineBreakMode="TailTruncation" />
-                                       LineBreakMode="TailTruncation" />
+
                                 <!-- Delete button -->
                                 <ImageButton Source="delete.png"
                                              Grid.Column="2"
@@ -53,24 +52,23 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        </CollectionView>
+
         <!-- Bottom Navigation -->
         <Grid Grid.Row="1" ColumnDefinitions="*,*,*" Margin="15,10"
               BackgroundColor="White" VerticalOptions="End" Padding="0,8">
-            <ImageButton Source="list.png"
             <ImageButton Source="list.png"
                          Grid.Column="0"
                          HorizontalOptions="Center"
                          HeightRequest="24"
                          WidthRequest="24"
                          BackgroundColor="Transparent"
-            <ImageButton Source="check.png"
+                         Clicked="OnListClicked" />
             <ImageButton Source="check.png"
                          Grid.Column="1"
                          HorizontalOptions="Center"
                          HeightRequest="24"
                          WidthRequest="24"
-            <ImageButton Source="profile.png"
+                         BackgroundColor="Transparent" />
             <ImageButton Source="profile.png"
                          Grid.Column="2"
                          HorizontalOptions="Center"
@@ -78,6 +76,6 @@
                          WidthRequest="24"
                          BackgroundColor="Transparent"
                          Clicked="OnProfileCLicked" />
-		</Grid>
-	</Grid>
+        </Grid>
+    </Grid>
 </ContentPage>
