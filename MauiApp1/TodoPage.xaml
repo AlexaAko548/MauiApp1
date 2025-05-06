@@ -103,14 +103,14 @@
             <ImageButton Source="check.png"
                          Grid.Column="1"
                          HorizontalOptions="Center"
-                         HeightRequest="24"
+                         HeightRequest="24" 
                          WidthRequest="24"
                          BackgroundColor="Transparent"
                          Clicked="OnCheckClicked"/>
             <ImageButton Source="profile.png"
                          Grid.Column="2"
                          HorizontalOptions="Center"
-                         HeightRequest="24"
+                         HeightRequest="24" 
                          WidthRequest="24"
                          BackgroundColor="Transparent"
                          Clicked="OnProfileClicked"/>
