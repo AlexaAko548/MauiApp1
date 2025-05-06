@@ -66,7 +66,7 @@
                          BackgroundColor="Transparent"
                          Clicked="OnCompleteClicked"/>
 
-            <ImageButton Source="profile.png" 
+            <ImageButton Source="profile.png"   
                          Grid.Column="2" 
                          HorizontalOptions="Center"
                          HeightRequest="24" 
