@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Storage;
 using static MauiApp1.SignUpPage;
 
 namespace MauiApp1
@@ -41,13 +41,12 @@ namespace MauiApp1
                 {
                     await DisplayAlert("Success", result.message, "OK");
 
-                    // (Optional) Store user info if you need it later
+                    // (Optional) Store user info if needed
                     var user = result.data;
-                    Preferences.Set("user_id", user.id); 
-                    Console.WriteLine($"Welcome, {user.fname} {user.lname} (ID: {user.id})");
-
-                    Session.UserId = result.data.id; // Set after login
-
+                    if (user != null)
+                    {
+                        Console.WriteLine($"Welcome, {user.fname} {user.lname} (ID: {user.id})");
+                    }
 
                     // Navigate to TodoPage
                     await Shell.Current.GoToAsync("//TodoPage");
@@ -66,21 +65,18 @@ namespace MauiApp1
         public class SignInResponse
         {
             public int status { get; set; }
-            public string message { get; set; }
-            public UserData data { get; set; }
+            public string? message { get; set; }
+            public UserData? data { get; set; }
         }
 
         public class UserData
         {
             public int id { get; set; }
-            public string fname { get; set; }
-            public string lname { get; set; }
-            public string email { get; set; }
-            public string timemodified { get; set; }
+            public string? fname { get; set; }
+            public string? lname { get; set; }
+            public string? email { get; set; }
+            public string? timemodified { get; set; }
         }
-
-
-
 
         // Navigate to the SignUpPage
         private async void SignUpButton_Clicked(object sender, EventArgs e)
