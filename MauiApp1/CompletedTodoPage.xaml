@@ -1,79 +1,61 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:MauiApp1"
              x:Class="MauiApp1.CompletedTodoPage"
-             x:DataType="local:CompletedTodoPage"
              BackgroundColor="#F5F5F5">
 
     <Grid RowDefinitions="*, Auto">
 
-        <!-- Main Content -->
-        <Grid Grid.Row="0" Margin="20">
-            <!-- Changed VerticalOptions from "FillAndExpand" to "Fill" -->
-            <ListView x:Name="CompletedTodoListView"
-                      ItemsSource="{Binding CompletedTasks}"
-                      HasUnevenRows="True"
-                      SeparatorVisibility="None"
-                      BackgroundColor="Transparent"
-                      VerticalOptions="Fill"
-                      ItemTapped="OnCompletedTodoItemTapped"
-                      Margin="0,0,0,20">
+        <!-- Completed Task List -->
+        <CollectionView ItemsSource="{Binding CompletedTasks}"
+                        SelectionMode="None"
+                        Grid.Row="0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10,8">
+                        <Border BackgroundColor="#D9D9D9" StrokeShape="RoundRectangle 12">
+                            <Border.Shadow>
+                                <Shadow Brush="Black" Opacity="0.3" Offset="0,4" Radius="4"/>
+                            </Border.Shadow>
 
-                <!-- Added x:DataType="local:TodoItem" so bindings like IsCompleted map to TodoItem -->
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:TodoItem">
-                        <ViewCell>
-                            <!-- Replaced Frame with Border to remove the 'Frame is obsolete' warning -->
-                            <Border BackgroundColor="#D9D9D9"
-                                    Margin="0,8"
-                                    StrokeShape="RoundRectangle 12">
+                            <Grid ColumnDefinitions="Auto, *, Auto"
+                                  Padding="10,12">
 
-                                <!-- If you want the old Frame's shadow, add this -->
-                                <Border.Shadow>
-                                    <Shadow Brush="Black"
-                                            Opacity="0.3"
-                                            Offset="0,4"
-                                            Radius="4" />
-                                </Border.Shadow>
+                                <!-- Checkbox -->
+                                <CheckBox IsChecked="{Binding IsCompleted}"
+                                          Color="Black"
+                                          VerticalOptions="Center"
+                                          CheckedChanged="OnCheckBoxUnchecked" />
 
-                                <Grid ColumnDefinitions="Auto, *, Auto" Padding="10,12">
-                                    <CheckBox IsChecked="{Binding IsCompleted}"
-                                              Grid.Column="0"
-                                              Color="Black"
-                                              VerticalOptions="Center" />
+                                <!-- Task title -->
+                                <Label Text="{Binding Title}"
+                                       Grid.Column="1"
+                                       FontSize="16"
+                                       VerticalOptions="Center"
+                                       LineBreakMode="TailTruncation" />
 
-                                    <Label Text="{Binding Title}"
-                                           Grid.Column="1"
-                                           VerticalOptions="Center"
-                                           FontSize="16"
-                                           LineBreakMode="TailTruncation" />
+                                <!-- Delete button -->
+                                <ImageButton Source="delete.png"
+                                             Grid.Column="2"
+                                             WidthRequest="20"
+                                             HeightRequest="20"
+                                             BackgroundColor="Transparent"
+                                             CommandParameter="{Binding .}"
+                                             Clicked="OnDeleteCompletedTaskClicked" />
+                            </Grid>
 
-                                    <HorizontalStackLayout Grid.Column="2"
-                                                           Spacing="5"
-                                                           Padding="5"
-                                                           VerticalOptions="Center">
-                                        <Image Source="delete.png"
-                                               WidthRequest="20"
-                                               HeightRequest="20"
-                                               VerticalOptions="Center" />
-                                        <HorizontalStackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="OnDeleteCompletedTaskClicked" />
-                                        </HorizontalStackLayout.GestureRecognizers>
-                                    </HorizontalStackLayout>
-                                </Grid>
-                            </Border>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
+                            <!-- Tap to edit -->
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnCompletedTodoItemTapped"/>
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
         <!-- Bottom Navigation -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,*,*"
-              Margin="15,10" BackgroundColor="White"
-              VerticalOptions="End"
-              Padding="0,8">
-
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*" Margin="15,10"
+              BackgroundColor="White" VerticalOptions="End" Padding="0,8">
             <ImageButton Source="list.png"
                          Grid.Column="0"
                          HorizontalOptions="Center"
@@ -81,14 +63,12 @@
                          WidthRequest="24"
                          BackgroundColor="Transparent"
                          Clicked="OnListClicked" />
-
             <ImageButton Source="check.png"
                          Grid.Column="1"
                          HorizontalOptions="Center"
                          HeightRequest="24"
                          WidthRequest="24"
                          BackgroundColor="Transparent" />
-
             <ImageButton Source="profile.png"
                          Grid.Column="2"
                          HorizontalOptions="Center"
