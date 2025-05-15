@@ -45,7 +45,8 @@
 
                             <!-- Tap to edit -->
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnCompletedTodoItemTapped"/>
+                                <TapGestureRecognizer 
+        Tapped="OnCompletedTodoItemTapped"/>
                             </Border.GestureRecognizers>
                         </Border>
                     </Grid>

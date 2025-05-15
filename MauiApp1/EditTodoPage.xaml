@@ -64,7 +64,7 @@
                          HeightRequest="24" 
                          WidthRequest="24"
                          BackgroundColor="Transparent"
-                         Clicked="OnCompleteClicked"/>
+                         Clicked="OnCompletedClicked"/>
 
             <ImageButton Source="profile.png"   
                          Grid.Column="2" 

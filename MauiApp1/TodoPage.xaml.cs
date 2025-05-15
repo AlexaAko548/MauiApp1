@@ -1,6 +1,9 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Newtonsoft.Json;
+using MauiApp1.Models;
+using System.Linq;               // for .ToList() and .FirstOrDefault()
+
 
 namespace MauiApp1
 {
@@ -25,9 +28,13 @@ namespace MauiApp1
             {
                 string url = $"https://todo-list.dcism.org/getItems_action.php?status=active&user_id={Session.UserId}";
                 using var httpClient = new HttpClient();
-                var response = await httpClient.GetStringAsync(url);
 
-                var result = JsonConvert.DeserializeObject<TodoApiResponse>(response);
+                var json = await httpClient.GetStringAsync(url);
+                var result = JsonConvert.DeserializeObject<TodoApiResponse>(json);
+
+
+                
+
 
                 if (result.status == 200 && result.data != null)
                 {
@@ -46,6 +53,8 @@ namespace MauiApp1
             {
                 await DisplayAlert("Error", $"Error fetching tasks: {ex.Message}", "OK");
             }
+
+            Session.CurrentTasks = Tasks.ToList();
         }
 
 
@@ -165,22 +174,6 @@ namespace MauiApp1
         public string count { get; set; }
     }
 
-
-
-
-    public class TodoItem
-    {
-        public int item_id { get; set; }
-        public string item_name { get; set; }
-        public string item_description { get; set; }
-        public string status { get; set; }
-        public int user_id { get; set; }
-        public string timemodified { get; set; }
-
-        // Helper for UI
-        public string Title => item_name;
-        public bool IsCompleted => status == "inactive";
-    }
 
 
 }
