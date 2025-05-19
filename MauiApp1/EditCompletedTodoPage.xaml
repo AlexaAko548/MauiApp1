@@ -1,0 +1,93 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.EditCompletedTodoPage"
+             BackgroundColor="#F5F5F5">
+
+	<Grid>
+		<Grid RowDefinitions="*, Auto" Padding="20" RowSpacing="20">
+
+			<!-- Form Content -->
+			<VerticalStackLayout Grid.Row="0" Spacing="20">
+
+				<!-- Title Entry -->
+				<Entry x:Name="TitleEntry"
+					   Placeholder="Title here"
+					   BackgroundColor="#D9D9D9"
+					   HeightRequest="50"
+					   TextColor="Black" />
+
+				<!-- Description Field -->
+				<Editor x:Name="DescriptionEntry"
+						Placeholder="Details"
+						BackgroundColor="#D9D9D9"
+						HeightRequest="150"
+						TextColor="Black"
+						AutoSize="TextChanges" />
+
+				<!-- Buttons -->
+				<Button
+						Text="Update"
+						BackgroundColor="#98FB98"
+						TextColor="Black"
+						Clicked="OnUpdateClicked" />
+
+				<Button
+						Text="Incomplete"
+						BackgroundColor="#F7E78E"
+						TextColor="Black"
+						Clicked="OnIncompleteClicked" />
+
+				<Button
+						Text="Delete"
+						BackgroundColor="#F7C5C5"
+						TextColor="Black"
+						Clicked="OnDeleteClicked" />
+
+			</VerticalStackLayout>
+
+			<!-- Bottom Navigation -->
+			<Grid Grid.Row="1" ColumnDefinitions="*,*,*"
+				  Margin="15,10" BackgroundColor="White"
+				  VerticalOptions="End"
+				  Padding="0,8">
+
+				<ImageButton Source="list.png"
+							 Grid.Column="0"
+							 HorizontalOptions="Center"
+							 HeightRequest="24"
+							 WidthRequest="24"
+							 BackgroundColor="Transparent"
+							 Clicked="OnListClicked"/>
+
+				<ImageButton Source="check.png"
+							 Grid.Column="1"
+							 HorizontalOptions="Center"
+							 HeightRequest="24"
+							 WidthRequest="24"
+							 BackgroundColor="Transparent"
+							 Clicked="OnCompletedClicked"/>
+
+				<ImageButton Source="profile.png"
+							 Grid.Column="2"
+							 HorizontalOptions="Center"
+							 HeightRequest="24"
+							 WidthRequest="24"
+							 BackgroundColor="Transparent"
+							 Clicked="OnProfileClicked"/>
+			</Grid>
+
+		</Grid>
+
+		<Grid x:Name="LoadingOverlay"
+          BackgroundColor="#80000000"
+          IsVisible="False"
+          InputTransparent="False">
+			<ActivityIndicator
+			  IsRunning="True"
+			  VerticalOptions="Center"
+			  HorizontalOptions="Center"/>
+		</Grid>
+
+	</Grid>
+	
+</ContentPage>

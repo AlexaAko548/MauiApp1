@@ -8,6 +8,9 @@ namespace MauiApp1
 {
     public partial class SignUpPage : ContentPage
     {
+        void ShowLoading() => LoadingOverlay.IsVisible = true;
+        void HideLoading() => LoadingOverlay.IsVisible = false;
+
         public SignUpPage()
         {
             InitializeComponent();
@@ -50,6 +53,8 @@ namespace MauiApp1
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using var httpClient = new HttpClient();
+
+            ShowLoading();
             try
             {
                 var response = await httpClient.PostAsync("https://todo-list.dcism.org/signup_action.php", content);
@@ -71,6 +76,10 @@ namespace MauiApp1
             catch (Exception ex)
             {
                 await DisplayAlert("Error", $"Something went wrong: {ex.Message}", "OK");
+            }
+            finally
+            {
+                HideLoading();
             }
         }
 

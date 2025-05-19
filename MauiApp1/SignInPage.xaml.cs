@@ -30,6 +30,7 @@ namespace MauiApp1
 
             using var httpClient = new HttpClient();
 
+            ShowLoading();
             try
             {
                 var response = await httpClient.GetAsync(url);
@@ -61,7 +62,14 @@ namespace MauiApp1
             {
                 await DisplayAlert("Error", $"Something went wrong: {ex.Message}", "OK");
             }
+            finally
+            {
+                HideLoading();
+            }
         }
+
+        void ShowLoading() => LoadingOverlay.IsVisible = true;
+        void HideLoading() => LoadingOverlay.IsVisible = false;
 
         public class SignInResponse
         {

@@ -22,6 +22,7 @@
     <ShellContent Route="EditTodoPage" ContentTemplate="{DataTemplate local:EditTodoPage}" />
     <ShellContent Route="CompletedTodoPage" ContentTemplate="{DataTemplate local:CompletedTodoPage}" />
     <ShellContent Route="ProfilePage" ContentTemplate="{DataTemplate local:ProfilePage}" />
+    <ShellContent Route="EditCompletedTodoPage" ContentTemplate="{DataTemplate local:EditCompletedTodoPage}" />
 
 
 </Shell>

@@ -26,6 +26,7 @@ namespace MauiApp1
         {
             try
             {
+                ShowLoading();
                 string url = $"https://todo-list.dcism.org/getItems_action.php?status=active&user_id={Session.UserId}";
                 using var httpClient = new HttpClient();
 
@@ -53,9 +54,17 @@ namespace MauiApp1
             {
                 await DisplayAlert("Error", $"Error fetching tasks: {ex.Message}", "OK");
             }
+            finally
+            {
+                HideLoading();
+            }
 
             Session.CurrentTasks = Tasks.ToList();
         }
+
+        // call this before any await-based work
+        void ShowLoading() => LoadingOverlay.IsVisible = true;
+        void HideLoading() => LoadingOverlay.IsVisible = false;
 
 
         private async void OnAddTaskClicked(object sender, EventArgs e)
@@ -72,6 +81,7 @@ namespace MauiApp1
                 bool confirm = await DisplayAlert("Confirm", $"Delete '{taskToDelete.Title}'?", "Yes", "No");
                 if (!confirm) return;
 
+                ShowLoading();
                 try
                 {
                     using var client = new HttpClient();
@@ -93,6 +103,10 @@ namespace MauiApp1
                 {
                     await DisplayAlert("Error", $"Delete failed: {ex.Message}", "OK");
                 }
+                finally
+                {
+                    HideLoading();
+                }
             }
         }
 
@@ -106,40 +120,50 @@ namespace MauiApp1
 
         private async void OnCheckBoxChanged(object sender, CheckedChangedEventArgs e)
         {
-            if (sender is CheckBox checkBox && checkBox.BindingContext is TodoItem checkedItem)
+
+            ShowLoading();
+            try
             {
-                if (e.Value)
+                if (sender is CheckBox checkBox && checkBox.BindingContext is TodoItem checkedItem)
                 {
-                    // Update status on server
-                    var url = "https://todo-list.dcism.org/statusItem_action.php";
-                    var data = new
+                    if (e.Value)
                     {
-                        status = "inactive",
-                        item_id = checkedItem.item_id
-                    };
+                        // Update status on server
+                        var url = "https://todo-list.dcism.org/statusItem_action.php";
+                        var data = new
+                        {
+                            status = "inactive",
+                            item_id = checkedItem.item_id
+                        };
 
-                    var json = JsonConvert.SerializeObject(data);
-                    var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                        var json = JsonConvert.SerializeObject(data);
+                        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-                    using var httpClient = new HttpClient();
-                    var response = await httpClient.PutAsync(url, content);
+                        using var httpClient = new HttpClient();
+                        var response = await httpClient.PutAsync(url, content);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Remove the item from the active list
-                        Tasks.Remove(checkedItem);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            // Remove the item from the active list
+                            Tasks.Remove(checkedItem);
 
-                        // Optional: Navigate or just show confirmation
-                        await DisplayAlert("Done", $"{checkedItem.Title} marked as done.", "OK");
-                        // await Shell.Current.GoToAsync("//CompletedTodoPage");
-                    }
-                    else
-                    {
-                        await DisplayAlert("Error", "Failed to update task status.", "OK");
-                        checkBox.IsChecked = false; // Reset checkbox
+                            // Optional: Navigate or just show confirmation
+                            await DisplayAlert("Done", $"{checkedItem.Title} marked as done.", "OK");
+                            // await Shell.Current.GoToAsync("//CompletedTodoPage");
+                        }
+                        else
+                        {
+                            await DisplayAlert("Error", "Failed to update task status.", "OK");
+                            checkBox.IsChecked = false; // Reset checkbox
+                        }
                     }
                 }
             }
+            finally
+            {
+                HideLoading();
+            }
+          
         }
 
 
@@ -147,9 +171,7 @@ namespace MauiApp1
         {
             if (sender is VisualElement visualElement && visualElement.BindingContext is TodoItem tappedItem)
             {
-                // Navigate to the EditTodoPage
-                var route = $"//EditTodoPage?item_id={tappedItem.item_id}";
-                await Shell.Current.GoToAsync(route);
+                await Shell.Current.GoToAsync($"EditTodoPage?item_id={tappedItem.item_id}");
 
             }
         }

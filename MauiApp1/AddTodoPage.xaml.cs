@@ -62,6 +62,7 @@ namespace MauiApp1
             string jsonData = JsonConvert.SerializeObject(todoItem);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
+            ShowLoading();
             try
             {
                 var response = await _httpClient.PostAsync($"{BaseUrl}/addItem_action.php", content);
@@ -83,9 +84,15 @@ namespace MauiApp1
             {
                 await DisplayAlert("Error", "An error occurred: " + ex.Message, "OK");
             }
+            finally
+            {
+                HideLoading();
+            }
 
             TitleEntry.Text = string.Empty;
             DescriptionEntry.Text = string.Empty;
         }
+        void ShowLoading() => LoadingOverlay.IsVisible = true;
+        void HideLoading() => LoadingOverlay.IsVisible = false;
     }
 }

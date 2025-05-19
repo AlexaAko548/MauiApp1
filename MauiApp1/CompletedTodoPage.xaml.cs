@@ -1,109 +1,130 @@
-﻿using System.Collections.ObjectModel;
-using Newtonsoft.Json;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
 using MauiApp1.Models;
-using System.Linq;        // for ToList() and FirstOrDefault()
-
+using Newtonsoft.Json;
 
 namespace MauiApp1
 {
     public partial class CompletedTodoPage : ContentPage
     {
-        public ObservableCollection<TodoItem> CompletedTasks { get; set; }
+        // 1) Initialize inline so CompletedTasks is never null
+        public ObservableCollection<TodoItem> CompletedTasks { get; set; } = new();
 
         public CompletedTodoPage()
         {
             InitializeComponent();
-            CompletedTasks = new ObservableCollection<TodoItem>();
             BindingContext = this;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            LoadCompletedTasksAsync(); // Refresh on page appear
+            _ = LoadCompletedTasksAsync();
         }
 
-        private async void LoadCompletedTasksAsync()
+        private async Task LoadCompletedTasksAsync()
         {
             try
             {
-                string url = $"https://todo-list.dcism.org/getItems_action.php?status=inactive&user_id={Session.UserId}";
-                using var httpClient = new HttpClient();
-                var response = await httpClient.GetStringAsync(url);
+                ShowLoading();
+                var url = $"https://todo-list.dcism.org/getItems_action.php?status=inactive&user_id={Session.UserId}";
+                using var http = new HttpClient();
+                var jsonResponse = await http.GetStringAsync(url);
 
-                var result = JsonConvert.DeserializeObject<TodoApiResponse>(response);
-
-                if (result.status == 200 && result.data != null)
+                // 2) Check for null before you dereference
+                var result = JsonConvert.DeserializeObject<TodoApiResponse>(jsonResponse);
+                if (result is not null && result.status == 200 && result.data is not null)
                 {
                     CompletedTasks.Clear();
                     foreach (var item in result.data.Values)
-                    {
                         CompletedTasks.Add(item);
-                    }
                 }
                 else
                 {
                     await DisplayAlert("Error", "Failed to load completed tasks.", "OK");
+                    return;
                 }
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Error", $"Error fetching completed tasks: {ex.Message}", "OK");
+                return;
+            }
+            finally
+            {
+                HideLoading();
             }
 
+            // keep session in sync
             Session.CurrentTasks = CompletedTasks.ToList();
         }
 
+        void ShowLoading() => LoadingOverlay.IsVisible = true;
+        void HideLoading() => LoadingOverlay.IsVisible = false;
+
         private async void OnCheckBoxUnchecked(object sender, CheckedChangedEventArgs e)
         {
-            if (sender is CheckBox checkBox && checkBox.BindingContext is TodoItem item)
+            // no possible null here: CompletedTasks is always non-null, handler only fires if we have a binding context
+            if (sender is CheckBox cb
+                && cb.BindingContext is TodoItem item
+                && !e.Value)
             {
-                if (!e.Value)
+                var payload = new { status = "active", item_id = item.item_id };
+                var body = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(body, Encoding.UTF8, "application/json");
+
+                try
                 {
-                    var data = new { status = "active", item_id = item.item_id };
-                    var content = new StringContent(JsonConvert.SerializeObject(data), System.Text.Encoding.UTF8, "application/json");
+                    using var http = new HttpClient();
+                    var respJson = await (await http.PutAsync(
+                        "https://todo-list.dcism.org/statusItem_action.php",
+                        content)).Content.ReadAsStringAsync();
 
-                    try
+                    var result = JsonConvert.DeserializeObject<TodoApiResponse>(respJson);
+                    if (result is not null && result.status == 200)
                     {
-                        using var client = new HttpClient();
-                        var response = await client.PutAsync("https://todo-list.dcism.org/statusItem_action.php", content);
-                        var resultJson = await response.Content.ReadAsStringAsync();
-                        var result = JsonConvert.DeserializeObject<TodoApiResponse>(resultJson);
-
-                        if (result.status == 200)
-                        {
-                            CompletedTasks.Remove(item);
-                            await DisplayAlert("Restored", "Task has been moved back to active.", "OK");
-                        }
-                        else
-                        {
-                            await DisplayAlert("Error", "Failed to restore task.", "OK");
-                        }
+                        CompletedTasks.Remove(item);
+                        await DisplayAlert("Restored", "Task has been moved back to active.", "OK");
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        await DisplayAlert("Error", $"Something went wrong: {ex.Message}", "OK");
+                        await DisplayAlert("Error", "Failed to restore task.", "OK");
                     }
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Error", $"Something went wrong: {ex.Message}", "OK");
                 }
             }
         }
 
         private async void OnDeleteCompletedTaskClicked(object sender, EventArgs e)
         {
-            if (sender is ImageButton button && button.CommandParameter is TodoItem itemToDelete)
+            if (sender is ImageButton btn
+                && btn.CommandParameter is TodoItem itemToDelete)
             {
-                bool confirm = await DisplayAlert("Delete", $"Delete '{itemToDelete.Title}'?", "Yes", "No");
-                if (!confirm) return;
+                // 3) Use item_name (which is non-null) in the prompt
+                bool confirm = await DisplayAlert(
+                    "Delete",
+                    $"Delete '{itemToDelete.item_name}'?",
+                    "Yes", "No"
+                );
+                if (!confirm)
+                    return;
 
                 try
                 {
-                    var url = $"https://todo-list.dcism.org/deleteItem_action.php?item_id={itemToDelete.item_id}";
-                    using var client = new HttpClient();
-                    var response = await client.DeleteAsync(url);
-                    var json = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<TodoApiResponse>(json);
+                    using var http = new HttpClient();
+                    var resp = await http.DeleteAsync(
+                        $"https://todo-list.dcism.org/deleteItem_action.php?item_id={itemToDelete.item_id}"
+                    );
+                    var respJson = await resp.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<TodoApiResponse>(respJson);
 
-                    if (result.status == 200)
+                    if (result is not null && result.status == 200)
                     {
                         CompletedTasks.Remove(itemToDelete);
                         await DisplayAlert("Deleted", "Task deleted.", "OK");
@@ -122,15 +143,17 @@ namespace MauiApp1
 
         private async void OnCompletedTodoItemTapped(object sender, EventArgs e)
         {
-            if (sender is VisualElement visualElement && visualElement.BindingContext is TodoItem tappedItem)
+            if (sender is VisualElement ve
+                && ve.BindingContext is TodoItem tappedItem)
             {
-                var route = $"//EditTodoPage?SelectedTask={Uri.EscapeDataString(tappedItem.Title)}";
-                await Shell.Current.GoToAsync(route);
+                await Shell.Current.GoToAsync($"EditCompletedTodoPage?item_id={tappedItem.item_id}");
             }
         }
 
-        private async void OnListClicked(object sender, EventArgs e) => await Shell.Current.GoToAsync("//TodoPage");
+        private async void OnListClicked(object sender, EventArgs e)
+            => await Shell.Current.GoToAsync("//TodoPage");
 
-        private async void OnProfileCLicked(object sender, EventArgs e) => await Shell.Current.GoToAsync("//ProfilePage");
+        private async void OnProfileCLicked(object sender, EventArgs e)
+            => await Shell.Current.GoToAsync("//ProfilePage");
     }
 }

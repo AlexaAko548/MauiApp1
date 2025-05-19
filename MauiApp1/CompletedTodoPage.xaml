@@ -1,82 +1,116 @@
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiApp1.CompletedTodoPage"
-             BackgroundColor="#F5F5F5">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:MauiApp1.Models"
+    xmlns:local="clr-namespace:MauiApp1"
+    x:Class="MauiApp1.CompletedTodoPage"
+    x:DataType="local:CompletedTodoPage"
+    BackgroundColor="#F5F5F5">
 
-    <Grid RowDefinitions="*, Auto">
+    <Grid>
+        <Grid RowDefinitions="*, Auto">
 
-        <!-- Completed Task List -->
-        <CollectionView ItemsSource="{Binding CompletedTasks}"
-                        SelectionMode="None"
-                        Grid.Row="0">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="10,8">
-                        <Border BackgroundColor="#D9D9D9" StrokeShape="RoundRectangle 12">
-                            <Border.Shadow>
-                                <Shadow Brush="Black" Opacity="0.3" Offset="0,4" Radius="4"/>
-                            </Border.Shadow>
+            <!-- Completed Task List -->
+            <CollectionView
+        ItemsSource="{Binding CompletedTasks}"
+        SelectionMode="None"
+        Grid.Row="0">
 
-                            <Grid ColumnDefinitions="Auto, *, Auto"
-                                  Padding="10,12">
+                <CollectionView.ItemTemplate>
+                    <!-- Tell the compiler: each item is a TodoItem -->
+                    <DataTemplate x:DataType="models:TodoItem">
+                        <Grid Padding="10,8">
+                            <Border BackgroundColor="#D9D9D9" StrokeShape="RoundRectangle 12">
+                                <Border.Shadow>
+                                    <Shadow Brush="Black" Opacity="0.3" Offset="0,4" Radius="4"/>
+                                </Border.Shadow>
 
-                                <!-- Checkbox -->
-                                <CheckBox IsChecked="{Binding IsCompleted}"
-                                          Color="Black"
-                                          VerticalOptions="Center"
-                                          CheckedChanged="OnCheckBoxUnchecked" />
+                                <Grid ColumnDefinitions="Auto, *, Auto"
+                              Padding="10,12">
 
-                                <!-- Task title -->
-                                <Label Text="{Binding Title}"
-                                       Grid.Column="1"
-                                       FontSize="16"
-                                       VerticalOptions="Center"
-                                       LineBreakMode="TailTruncation" />
+                                    <!-- Checkbox -->
+                                    <CheckBox
+                                IsChecked="{Binding IsCompleted}"
+                                Color="Black"
+                                VerticalOptions="Center"
+                                CheckedChanged="OnCheckBoxUnchecked" />
 
-                                <!-- Delete button -->
-                                <ImageButton Source="delete.png"
-                                             Grid.Column="2"
-                                             WidthRequest="20"
-                                             HeightRequest="20"
-                                             BackgroundColor="Transparent"
-                                             CommandParameter="{Binding .}"
-                                             Clicked="OnDeleteCompletedTaskClicked" />
-                            </Grid>
+                                    <!-- Task title -->
+                                    <Label
+                                Text="{Binding item_name}"
+                                Grid.Column="1"
+                                FontSize="16"
+                                VerticalOptions="Center"
+                                LineBreakMode="TailTruncation" />
 
-                            <!-- Tap to edit -->
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer 
-        Tapped="OnCompletedTodoItemTapped"/>
-                            </Border.GestureRecognizers>
-                        </Border>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                                    <!-- Delete button -->
+                                    <ImageButton
+                                Source="delete.png"
+                                Grid.Column="2"
+                                WidthRequest="20"
+                                HeightRequest="20"
+                                BackgroundColor="Transparent"
+                                CommandParameter="{Binding .}"
+                                Clicked="OnDeleteCompletedTaskClicked" />
+                                </Grid>
 
-        <!-- Bottom Navigation -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,*,*" Margin="15,10"
-              BackgroundColor="White" VerticalOptions="End" Padding="0,8">
-            <ImageButton Source="list.png"
-                         Grid.Column="0"
-                         HorizontalOptions="Center"
-                         HeightRequest="24"
-                         WidthRequest="24"
-                         BackgroundColor="Transparent"
-                         Clicked="OnListClicked" />
-            <ImageButton Source="check.png"
-                         Grid.Column="1"
-                         HorizontalOptions="Center"
-                         HeightRequest="24"
-                         WidthRequest="24"
-                         BackgroundColor="Transparent" />
-            <ImageButton Source="profile.png"
-                         Grid.Column="2"
-                         HorizontalOptions="Center"
-                         HeightRequest="24"
-                         WidthRequest="24"
-                         BackgroundColor="Transparent"
-                         Clicked="OnProfileCLicked" />
+                                <!-- Tap to edit -->
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnCompletedTodoItemTapped"/>
+                                </Border.GestureRecognizers>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Bottom Navigation -->
+            <Grid Grid.Row="1"
+          ColumnDefinitions="*,*,*"
+          Margin="15,10"
+          BackgroundColor="White"
+          VerticalOptions="End"
+          Padding="0,8">
+
+                <ImageButton
+            Source="list.png"
+            Grid.Column="0"
+            HorizontalOptions="Center"
+            HeightRequest="24"
+            WidthRequest="24"
+            BackgroundColor="Transparent"
+            Clicked="OnListClicked" />
+
+                <ImageButton
+            Source="check.png"
+            Grid.Column="1"
+            HorizontalOptions="Center"
+            HeightRequest="24"
+            WidthRequest="24"
+            BackgroundColor="Transparent" />
+
+                <ImageButton
+            Source="profile.png"
+            Grid.Column="2"
+            HorizontalOptions="Center"
+            HeightRequest="24"
+            WidthRequest="24"
+            BackgroundColor="Transparent"
+            Clicked="OnProfileCLicked" />
+
+            </Grid>
         </Grid>
+
+        <Grid x:Name="LoadingOverlay"
+          BackgroundColor="#80000000"
+          IsVisible="False"
+          InputTransparent="False">
+            <ActivityIndicator 
+        IsRunning="True"
+        VerticalOptions="Center"
+        HorizontalOptions="Center"/>
+        </Grid>
+
     </Grid>
+
 </ContentPage>
