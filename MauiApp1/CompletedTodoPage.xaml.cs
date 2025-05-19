@@ -1,5 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using Newtonsoft.Json;
+using MauiApp1.Models;
+using System.Linq;        // for ToList() and FirstOrDefault()
+
 
 namespace MauiApp1
 {
@@ -47,6 +50,8 @@ namespace MauiApp1
             {
                 await DisplayAlert("Error", $"Error fetching completed tasks: {ex.Message}", "OK");
             }
+
+            Session.CurrentTasks = CompletedTasks.ToList();
         }
 
         private async void OnCheckBoxUnchecked(object sender, CheckedChangedEventArgs e)

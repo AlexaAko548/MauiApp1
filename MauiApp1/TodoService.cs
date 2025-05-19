@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using MauiApp1.Models;
+using System.Linq;        // for ToList() and FirstOrDefault()
+
 
 namespace MauiApp1
 {
